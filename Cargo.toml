@@ -1,0 +1,62 @@
+[package]
+name = "orbitflare-robinhood-sdk"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.91"
+description = "Rust SDK for Robinhood Chain by OrbitFlare - RPC and WebSocket clients"
+authors = ["OrbitFlare"]
+license = "MIT"
+repository = "https://github.com/orbitflare/orbitflare-robinhood-sdk-rs"
+homepage = "https://orbitflare.com"
+keywords = ["robinhood", "evm", "rpc", "orbitflare", "websocket"]
+categories = ["api-bindings", "development-tools"]
+readme = "README.md"
+
+[features]
+default = ["rpc"]
+rpc = [
+    "dep:reqwest",
+    "dep:serde_json",
+    "dep:alloy-primitives",
+    "dep:alloy-rpc-types-eth",
+    "dep:alloy-network",
+]
+ws = ["rpc", "dep:tokio-tungstenite", "dep:futures-util"]
+all = ["rpc", "ws"]
+
+[dependencies]
+thiserror = "2.0.18"
+tracing = "0.1.44"
+tokio = { version = "1.51.1", features = ["rt", "time", "sync", "macros"] }
+serde = { version = "1.0.228", features = ["derive"] }
+
+reqwest = { version = "0.13.2", features = ["json"], optional = true }
+serde_json = { version = "1.0.149", optional = true }
+alloy-primitives = { version = "1", features = ["serde"], optional = true }
+alloy-rpc-types-eth = { version = "1", optional = true }
+alloy-network = { version = "1", optional = true }
+
+tokio-tungstenite = { version = "0.29.0", features = ["native-tls"], optional = true }
+futures-util = { version = "0.3.32", default-features = false, features = ["sink"], optional = true }
+
+[dev-dependencies]
+tracing-subscriber = "0.3.23"
+tokio = { version = "1.51.1", features = ["full"] }
+wiremock = "0.6.5"
+serde_json = "1.0.149"
+
+[[example]]
+name = "rpc_basic"
+required-features = ["rpc"]
+
+[[example]]
+name = "rpc_full"
+required-features = ["rpc"]
+
+[[example]]
+name = "ws_basic"
+required-features = ["ws"]
+
+[[example]]
+name = "ws_full"
+required-features = ["ws"]
